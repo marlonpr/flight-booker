@@ -1,0 +1,17 @@
+<%= form_for @booking do |f| %>
+  <%= f.hidden_field :flight_id %>
+  <%= f.hidden_field :passenger_count %>
+  <%= f.label :flight_date %>
+  <%= @flight.start_datetime %>
+  <%= f.label :departure_airport %>
+  <%= @flight.departure_airport.code %>
+  <%= f.label :arrival_airport %>
+  <%= @flight.arrival_airport.code %>
+  <%= f.fields_for :passengers do |passenger_form| %>
+    <%= passenger_form.label :name %>
+    <%= passenger_form.text_field :name %>
+    <%= passenger_form.label :email %>
+    <%= passenger_form.text_field :email %>
+  <% end %>
+  <%= f.submit "Book Flight" %>
+<% end %>

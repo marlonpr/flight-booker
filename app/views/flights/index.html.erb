@@ -1,0 +1,55 @@
+<h1>Flights</h1>
+
+<%= form_tag new_booking_path, method: :get do %>
+  <table>
+    <thead>
+      <tr>
+        <th>Departure</th>
+        <th>Arrival</th>
+        <th>Start Time</th>
+        <th>Duration</th>
+        <th>Select</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @flights.any? %>
+        <% @flights.each do |flight| %>
+          <tr>
+            <td><%= flight.departure_airport.code %></td>
+            <td><%= flight.arrival_airport.code %></td>
+            <td><%= flight.start_datetime %></td>
+            <td><%= flight.duration %></td>
+            <td><%= radio_button_tag 'flight_id', flight.id %></td>
+            <td><%= label_tag :passenger, "Number of Passengers" %>
+                <%= select_tag :passenger_count, options_for_select(1..4) %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="5">No flights found</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= submit_tag "Select Flight" %>
+<% end %>
+
+
+<%= form_tag flights_path, method: :get do %>
+  <%= label_tag :departure_code, "Departure Airport" %>
+  <%= select_tag :departure_code, options_from_collection_for_select(Airport.all, :code, :code) %>
+  <br>
+
+  <%= label_tag :arrival_code, "Arrival Airport" %>
+  <%= select_tag :arrival_code, options_from_collection_for_select(Airport.all, :code, :code) %>
+  <br>
+
+  <%= label_tag :flight_date, "Flight Date" %>
+  <%= select_tag :flight_date, options_for_select(Flight.all.map{|f| f.start_datetime.to_date}.uniq) %>
+  <br>
+
+  <%= submit_tag "Search" %>
+<% end %>
+
+
